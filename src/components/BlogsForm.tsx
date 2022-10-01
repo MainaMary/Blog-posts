@@ -20,7 +20,7 @@ const BlogsForm = () => {
   const checkValue = Boolean(title) && Boolean(content);
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    if (!checkValue) return;
+    if (!title && !content) return;
     dispatch(
       postBlogs({
         title: title,
