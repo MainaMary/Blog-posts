@@ -5,19 +5,28 @@ const Navbar = () => {
   return (
     <Nav>
       <div>
-        <h2>Blogs</h2>
+        <Title>Blogs</Title>
       </div>
 
-      <div>No of blogs: 3</div>
+      <div>
+        <Items> No of blogs: 3</Items>
+      </div>
     </Nav>
   );
 };
 
 export default Navbar;
 const Nav = styled.nav`
-  height: 40vh;
-  padding: 0 24px;
+  height: 10vh;
+  padding: 0 32px;
   display: flex;
   justify-content: space-between;
-  backgorund-color: var(--clr-primary);
+  background-color: var(--clr-primary);
+  align-items: center;
+`;
+const Title = styled.h2`
+  color: #fff;
+`;
+const Items = styled.h2`
+  color: #fff;
 `;
