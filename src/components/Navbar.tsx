@@ -1,7 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 const Navbar = () => {
+  const blogsArr = useSelector((state: RootState) => state.PostBlog);
   return (
     <Nav>
       <div>
@@ -9,7 +12,7 @@ const Navbar = () => {
       </div>
 
       <div>
-        <Items> No of blogs: 3</Items>
+        <Items> {`No of blogs ${blogsArr.length}`}</Items>
       </div>
     </Nav>
   );
@@ -18,7 +21,7 @@ const Navbar = () => {
 export default Navbar;
 const Nav = styled.nav`
   height: 10vh;
-  padding: 0 32px;
+  padding: 0 48px;
   display: flex;
   justify-content: space-between;
   background-color: var(--clr-primary);

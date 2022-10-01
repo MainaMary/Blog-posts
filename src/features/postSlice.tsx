@@ -1,6 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-const initialState = [
+interface PostProps {
+  title: string;
+  content: string;
+  id?: string;
+}
+const initialState: any = [
   {
     title: "Redux Toolkit",
     content: "Batteries included toolset for Redux development",
@@ -11,10 +15,12 @@ const initialState = [
   },
 ];
 export const postSlice = createSlice({
-  name: "create-blogs",
+  name: "PostBlog",
   initialState,
   reducers: {
-    postBlogs: (state, action: PayloadAction<any>) => {},
+    postBlogs: (state, action: PayloadAction<any>) => {
+      state.push(action.payload);
+    },
   },
 });
 
