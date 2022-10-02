@@ -21,8 +21,12 @@ export const postSlice = createSlice({
     postBlogs: (state, action: PayloadAction<any>) => {
       state.push(action.payload);
     },
+    removeBlog: (state, action: PayloadAction<any>) => {
+      const newList = state.splice(action.payload, 1);
+      state.push(newList);
+    },
   },
 });
 
-export const { postBlogs } = postSlice.actions;
+export const { postBlogs, removeBlog } = postSlice.actions;
 export default postSlice.reducer;

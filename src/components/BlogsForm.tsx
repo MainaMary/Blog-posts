@@ -5,7 +5,7 @@ import { postBlogs } from "../features/postSlice";
 import { RootState } from "../store";
 import { nanoid } from "@reduxjs/toolkit";
 import BlogsList from "./BlogsList";
-import TimeTracker from "../components/TimeTracker";
+
 interface Props {
   id: string;
   name: string;
@@ -13,12 +13,14 @@ interface Props {
 const BlogsForm = () => {
   const dispatch = useDispatch();
   const blogsArr = useSelector((state: RootState) => state.PostBlog);
+  const sortedBlogs = blogsArr
+    .slice()
+    .sort((a: any, b: any) => b.date - a.date);
   const authorsList = useSelector((state: RootState) => state.Authors);
   console.log(blogsArr, "blogs");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [authorId, setAuthorId] = useState("");
-  console.log(authorId, "authorId");
 
   const handleTitle = (e: any) => {
     setTitle(e.target.value);
@@ -42,7 +44,6 @@ const BlogsForm = () => {
     setContent("");
     setTitle("");
   };
-  console.log(new Date().toISOString(), "date");
 
   return (
     <Main>
@@ -78,8 +79,8 @@ const BlogsForm = () => {
         </Form>
       </Wrapper>
       <Grid>
-        {blogsArr.map((blog: any, index: number) => {
-          console.log(blog, "blog");
+        {sortedBlogs.map((blog: any, index: number) => {
+          console.log(blog, index, "blog");
           return (
             <>
               <BlogsList
@@ -88,6 +89,7 @@ const BlogsForm = () => {
                 content={blog.content}
                 authorId={authorId}
                 time={blog.date}
+                deleteId={index}
               />
             </>
           );

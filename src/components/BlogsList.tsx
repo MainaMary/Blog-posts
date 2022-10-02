@@ -1,7 +1,9 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import TimeTracker from "../components/TimeTracker";
+import { removeBlog } from "../features/postSlice";
+import styled from "styled-components";
 
 interface IProps {
   title: string;
@@ -9,11 +11,16 @@ interface IProps {
   id?: string;
   authorId?: string;
   time?: string;
+  deleteId: number;
 }
 const BlogsList = (props: IProps) => {
-  const { title, content, authorId, time } = props;
+  const { title, content, authorId, time, deleteId } = props;
   const authorsArr = useSelector((state: RootState) => state.Authors);
   const findAuth = authorsArr.find((el) => el.id === authorId);
+  const dispatch = useDispatch();
+  const handleClick = () => {
+    dispatch(removeBlog(deleteId));
+  };
   return (
     <div
       style={{
@@ -26,10 +33,21 @@ const BlogsList = (props: IProps) => {
     >
       <h1>{title}</h1>
       <p>{content}</p>
-      <p>{findAuth ? findAuth.name : "unknown"}</p>
+      <p>{findAuth ? findAuth.name : "unknown author"}</p>
       <TimeTracker time={time} />
+      <Button onClick={handleClick}>Remove post</Button>
     </div>
   );
 };
 
 export default BlogsList;
+const Button = styled.div`
+  color: #fff;
+  background-color: red;
+  padding: 5px 12px;
+  font-size: 16px;
+  text-align: center;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+`;
