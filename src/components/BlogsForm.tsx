@@ -5,12 +5,21 @@ import { postBlogs } from "../features/postSlice";
 import { RootState } from "../store";
 import { nanoid } from "@reduxjs/toolkit";
 import BlogsList from "./BlogsList";
+import TimeTracker from "../components/TimeTracker";
+interface Props {
+  id: string;
+  name: string;
+}
 const BlogsForm = () => {
   const dispatch = useDispatch();
   const blogsArr = useSelector((state: RootState) => state.PostBlog);
+  const authorsList = useSelector((state: RootState) => state.Authors);
   console.log(blogsArr, "blogs");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [authorId, setAuthorId] = useState("");
+  console.log(authorId, "authorId");
+
   const handleTitle = (e: any) => {
     setTitle(e.target.value);
   };
@@ -26,11 +35,15 @@ const BlogsForm = () => {
         title: title,
         content: content,
         id: nanoid(),
+        authorId: authorId,
+        date: new Date().toISOString(),
       })
     );
     setContent("");
     setTitle("");
   };
+  console.log(new Date().toISOString(), "date");
+
   return (
     <Main>
       <Wrapper>
@@ -47,14 +60,36 @@ const BlogsForm = () => {
             <CustomTextArea name="content" onChange={handleContent} />
           </Box>
           <Box>
+            <Select
+              value={authorId}
+              onChange={(e: any) => setAuthorId(e.target.value)}
+            >
+              {authorsList.map((author) => (
+                <>
+                  <Option value="">Select author..</Option>
+                  <Option value={author.id}>{author.name}</Option>
+                </>
+              ))}
+            </Select>
+          </Box>
+          <Box>
             <Button disabled={!checkValue}>Add blog</Button>
           </Box>
         </Form>
       </Wrapper>
       <Grid>
         {blogsArr.map((blog: any, index: number) => {
+          console.log(blog, "blog");
           return (
-            <BlogsList key={index} title={blog.title} content={blog.content} />
+            <>
+              <BlogsList
+                key={index}
+                title={blog.title}
+                content={blog.content}
+                authorId={authorId}
+                time={blog.date}
+              />
+            </>
           );
         })}
       </Grid>
@@ -95,6 +130,17 @@ const CustomInput = styled.input`
   width: 100%;
   padding: 10px;
   border-radius: 5px;
+`;
+const Select = styled.select`
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+`;
+const Option = styled.option`
+  width: 100%;
+  border: none;
+  box-shadow: 0 0 3px #777;
+  padding-right: 10px;
 `;
 const Title = styled.h2``;
 const Form = styled.form`
